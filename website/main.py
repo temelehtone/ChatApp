@@ -27,5 +27,11 @@ def home():
 
     return render_template("index.html")
 
+@app.route("/run")
+def run():
+    print("RUN")
+    return "nice"
+
+
 if __name__ == "__main__":
     app.run(debug=True)
