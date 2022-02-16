@@ -2,7 +2,24 @@
 
 {% block title %}Home{% endblock %}
 
-{% block content %}
 
-<button type="button" class="btn btn-dark" id="test">Dark</button>
+<!-- {% if login %}
+{% block messageGreen %}
+{{ session["name"] }} logged in.
+{% endblock %}
+{% endif %} -->
+
+{% block content %}
+<section class="chat-room">
+    <div class="text-field">
+    {% for msg in messages %}
+    <h1>{{msg}}</h1>
+    {% endfor %}
+    </div>
+    <form class="input-field" method="POST">
+        <input placeholder="Type..." type="message" name="message">
+        <button type="submit">Send</button>
+        </form>
+</section>
+
 {% endblock %}

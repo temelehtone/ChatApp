@@ -10,10 +10,11 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">CHAT APP</a>
         <button
@@ -42,6 +43,14 @@
         </div>
       </div>
     </nav>
+
+    <!-- <div class="alert alert-success" role="alert">
+        {% block messageGreen %}{% endblock %}
+      </div>
+    <div class="alert alert-dark" role="alert">
+        {% block messageGrey %}{% endblock %}
+      </div> -->
+
     {% block content %} {% endblock %}
 
     <script
