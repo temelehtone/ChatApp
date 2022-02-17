@@ -5,9 +5,11 @@ $('.text-field').scrollTop($('.text-field')[0].scrollHeight);
 
 
 $(function() {
-    $('#test').on('click', function(e) {
+    $('#sendBtn').on('click', function(e) {
+      var value = document.getElementById("msg").value
       e.preventDefault()
-      $.getJSON('/add_msg',
+      $.getJSON('/send_message',
+          {val: value},
           function(data) {
         //do nothing
       });

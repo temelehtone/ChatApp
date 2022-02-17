@@ -23,7 +23,7 @@ def update_messages():
             if msg == "{quit}":
                 break
 
-Thread(target=update_messages).start()  
+ 
 
 
 

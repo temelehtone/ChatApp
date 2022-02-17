@@ -1,7 +1,4 @@
-{% extends "base.html" %}
-
-{% block title %}Home{% endblock %}
-
+{% extends "base.html" %} {% block title %}Home{% endblock %}
 
 <!-- {% if login %}
 {% block messageGreen %}
@@ -11,15 +8,16 @@
 
 {% block content %}
 <section class="chat-room">
-    <div class="text-field">
-    {% for msg in messages %}
+  <div class="text-field">
+    {% for msg in session["messages"] %}
     <h1>{{msg}}</h1>
     {% endfor %}
-    </div>
-    <form class="input-field" method="POST">
-        <input placeholder="Type..." type="message" name="message">
-        <button type="submit">Send</button>
-        </form>
+  </div>
+  <div class="input-field">
+    <input id="msg" placeholder="Type..." type="message" name="message" />
+  <button type="submit" id="sendBtn">Send</button>
+  </div>
+  
 </section>
 
 {% endblock %}

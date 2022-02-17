@@ -62,7 +62,7 @@ def wait_for_connection():
             client, addr = SERVER.accept() # Wait for any new connections
             person = Person(addr, client) # Create new person for connection
             persons.append(person)
-            print(f"[CONNECTION] {addr} commected to the server at {time.time()}")
+            print(f"[CONNECTION] {addr} connected to the server at {time.time()}")
             Thread(target=client_communication, args=(person, )).start()
         except Exception as e:
             print("[FAILURE]", e)
