@@ -35,7 +35,7 @@ def client_communication(person):
     name = client.recv(BUFSIZE).decode(FORMAT)
     person.set_name(name)
     msg = bytes(f"{name} has joined the chat!", FORMAT)
-    broadcast(msg, "") # Broadcasts welcome message
+    broadcast(msg, "SERVER") # Broadcasts welcome message
     
     while True: # Wait for any messages from person
         try:
@@ -44,12 +44,11 @@ def client_communication(person):
             if msg == bytes("{quit}", FORMAT): # If message is quit disconnect client
                 client.close()
                 persons.remove(person)
-                broadcast(bytes(f"{name} has left the chat...", FORMAT), "")
-                
+                broadcast(bytes(f"{name} has left the chat...", FORMAT), "SERVER")
                 print(f"[DISCONNECTED] {name} diconnected")
                 break
             else:
-                broadcast(msg, name + ": ")
+                broadcast(msg, name)
                 print(f"{name}: ", msg.decode(FORMAT))
         except Exception as e:
             print("[EXCEPTION]", e)

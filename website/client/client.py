@@ -23,6 +23,8 @@ class Client:
         self.send_message(name)
         self.lock = Lock()
 
+    def set_name(self, name):
+        self.name = name
     
 
     def receive_message(self):
@@ -34,6 +36,7 @@ class Client:
                 # make sure memory is safe to access
                 self.lock.acquire()
                 self.messages.append(msg)
+                print(self.messages)
                 self.lock.release()
 
             except Exception as e:
@@ -43,9 +46,12 @@ class Client:
 
     def send_message(self, msg):
         # Send messages to server
-        self.client_socket.send(bytes(msg, FORMAT))
-        if msg == "{quit}":
-            self.client_socket.close()
+        try:
+            self.client_socket.send(bytes(msg, FORMAT))
+            if msg == "{quit}":
+                self.client_socket.close()
+        except Exception as e:
+            print(e)
 
     def get_messages(self):
         # Returns a list of messages
@@ -54,7 +60,7 @@ class Client:
         self.lock.acquire()
         self.messages = []
         self.lock.release()
-        return self.messages
+        return messages_copy
 
     def disconnect(self):
         self.send_message("{quit}")

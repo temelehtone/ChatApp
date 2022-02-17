@@ -36,3 +36,24 @@
     width: 100px;
     color: white;
 }
+.login-page{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page form{
+    display: flex;
+    flex-direction: column;
+}
+.login-page form div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.login-page form button{
+    margin-top: 10px;
+}
