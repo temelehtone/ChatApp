@@ -1,15 +1,16 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %}
 
-<!-- {% if login %}
-{% block messageGreen %}
-{{ session["name"] }} logged in.
-{% endblock %}
-{% endif %} -->
+
 
 {% block content %}
+
 <section class="chat-room">
+  <div id="status"></div>
   <div class="text-field">
-    <h1 id="test"></h1>
+    <ul id="list">
+      
+    </ul>
+    
   </div>
   <div class="input-field">
     <input id="msg" placeholder="Type..." type="message" name="message" />

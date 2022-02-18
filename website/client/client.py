@@ -3,7 +3,7 @@ from threading import Thread, Lock
 import time
 
 #GLOBAL CONSTANTS
-HOST = 'localhost'
+HOST = '86.50.97.197'
 PORT = 5500
 ADDR = (HOST, PORT)
 BUFSIZE = 512

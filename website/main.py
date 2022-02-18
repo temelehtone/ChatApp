@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session, url_for, request, redirect, jsonify
 from client import Client
 from threading import Thread
-import time
+from datetime import datetime
 
 NAME_KEY = 'name'
 
@@ -68,6 +68,8 @@ def update_messages():
         time.sleep(0.1) # Update every 100ms
         if not client: continue
         new_messages = client.get_messages() # get any new messages from client 
+        for m in new_messages:
+            m += f":{datetime.now().strftime('%H:%M:%S')}"
         messages.extend(new_messages) # add to local list of messages
         
         for msg in new_messages: 
@@ -77,5 +79,5 @@ def update_messages():
 
 if __name__ == "__main__":
     Thread(target=update_messages).start()
-    app.run(debug=True)
+    app.run(debug=True, host="86.50.97.197")
      

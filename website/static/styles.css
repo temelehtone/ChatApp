@@ -57,3 +57,58 @@
 .login-page form button{
     margin-top: 10px;
 }
+
+.text-field ul{
+    
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+.text-field ul li {
+    height: 70px;
+    min-width: 300px;
+    background: rgb(189, 189, 189);
+    border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: 5px rgba(0,0,0,0.7);
+    list-style: none;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+
+
+#status {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  #status.success {
+    background-color: rgb(211, 250, 153);
+    animation: status 4s ease forwards;
+  }
+  #status.error {
+    background-color: rgb(250, 129, 92);
+    color: white;
+    animation: status 4s ease forwards;
+  }
+  @keyframes status {
+    0% {
+      opacity: 1;
+      pointer-events: all;
+    }
+    90% {
+      opacity: 1;
+      pointer-events: all;
+    }
+    100% {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }

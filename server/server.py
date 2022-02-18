@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import time
@@ -6,7 +7,7 @@ from person import Person
 
 
 #GLOBAL CONSTANTS
-HOST = "localhost"
+HOST = "86.50.97.197"
 PORT = 5500
 BUFSIZE = 512
 ADDR = (HOST, PORT)
@@ -34,7 +35,7 @@ def client_communication(person):
     # First message received is always the persons name
     name = client.recv(BUFSIZE).decode(FORMAT)
     person.set_name(name)
-    msg = bytes(f"{name} has joined the chat!", FORMAT)
+    msg = bytes(f"{name} has joined the chat from", FORMAT)
     broadcast(msg, "SERVER") # Broadcasts welcome message
     
     while True: # Wait for any messages from person
@@ -45,7 +46,7 @@ def client_communication(person):
                 client.close()
                 persons.remove(person)
                 broadcast(bytes(f"{name} has left the chat...", FORMAT), "SERVER")
-                print(f"[DISCONNECTED] {name} diconnected")
+                print(f"[DISCONNECTED] {name} disconnected")
                 break
             else:
                 broadcast(msg, name)
@@ -61,7 +62,7 @@ def wait_for_connection():
             client, addr = SERVER.accept() # Wait for any new connections
             person = Person(addr, client) # Create new person for connection
             persons.append(person)
-            print(f"[CONNECTION] {addr} connected to the server at {time.time()}")
+            print(f"[CONNECTION] {addr} connected to the server at {datetime.now().strftime('%H:%M:%S')}")
             Thread(target=client_communication, args=(person, )).start()
         except Exception as e:
             print("[FAILURE]", e)
