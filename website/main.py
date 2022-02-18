@@ -1,7 +1,8 @@
-from flask import Flask, render_template, session, url_for, request, redirect, jsonify
+from flask import Flask, render_template, session, url_for, request, redirect, jsonify, flash
 from client import Client
 from threading import Thread
 from datetime import datetime
+import time
 
 NAME_KEY = 'name'
 
@@ -15,10 +16,12 @@ def disconnect():
     global client
     if client:
         client.disconnect()
+        flash("You have been logged out!", "info")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    disconnect()
+    
+    
     if request.method == "POST":
         session[NAME_KEY] = request.form["inputName"]
         
@@ -28,8 +31,9 @@ def login():
 
 @app.route("/logout")
 def logout():
+    
     if NAME_KEY in session:
-        
+        disconnect()
         session.pop(NAME_KEY, None)
         
     return redirect(url_for("login"))
@@ -68,8 +72,9 @@ def update_messages():
         time.sleep(0.1) # Update every 100ms
         if not client: continue
         new_messages = client.get_messages() # get any new messages from client 
-        for m in new_messages:
-            m += f":{datetime.now().strftime('%H:%M:%S')}"
+        for i in range(len(new_messages)):
+            if new_messages[i][0:6] != "SERVER":
+                new_messages[i] += f":{datetime.now().strftime('%H:%M:%S')}"
         messages.extend(new_messages) # add to local list of messages
         
         for msg in new_messages: 

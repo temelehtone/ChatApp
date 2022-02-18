@@ -35,7 +35,7 @@ def client_communication(person):
     # First message received is always the persons name
     name = client.recv(BUFSIZE).decode(FORMAT)
     person.set_name(name)
-    msg = bytes(f"{name} has joined the chat from", FORMAT)
+    msg = bytes(f"{name} has joined the chat!", FORMAT)
     broadcast(msg, "SERVER") # Broadcasts welcome message
     
     while True: # Wait for any messages from person

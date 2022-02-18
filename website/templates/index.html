@@ -1,22 +1,22 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %}
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
 
-
-
-{% block content %}
 
 <section class="chat-room">
   <div id="status"></div>
-  <div class="text-field">
-    <ul id="list">
-      
-    </ul>
-    
+  <div id="text-field">
+    <ul id="list"></ul>
   </div>
   <div class="input-field">
-    <input id="msg" placeholder="Type..." type="message" name="message" />
-  <button type="submit" id="sendBtn">Send</button>
+    <input
+      id="msg"
+      placeholder="Type..."
+      type="message"
+      name="message"
+      maxlength="100"
+    />
+    <button type="submit" id="sendBtn">Send</button>
   </div>
-  
 </section>
 
 {% endblock %}
