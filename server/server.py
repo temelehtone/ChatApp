@@ -48,11 +48,13 @@ def client_communication(person):
                 broadcast(bytes(f"{name} has left the chat...", FORMAT), "SERVER")
                 print(f"[DISCONNECTED] {name} disconnected")
                 break
+            elif msg == bytes("q", FORMAT):
+                SERVER.close()
             else:
                 broadcast(msg, name)
-                print(f"{name}: ", msg.decode(FORMAT))
+
         except Exception as e:
-            print("[EXCEPTION]", e)
+            print("[EXCEPTION] in communication", e)
 
 def wait_for_connection():
     # Wait for connection from new clients, start new thread once connected

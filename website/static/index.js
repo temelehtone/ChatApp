@@ -4,7 +4,7 @@ $(function () {
   $("#sendBtn").on("click", function (e) {
     var value = document.getElementById("msg").value;
     document.getElementById("msg").value = "";
-
+    
     e.preventDefault();
     $.getJSON("/send_message", { val: value }, function (data) {
       //do nothing
@@ -24,7 +24,6 @@ function update() {
       return response.json();
     })
     .then(function (dict) {
-      scrollToBottom();
       $("#list").empty();
       for (msg of dict["messages"]) {
         if (msg.substring(0, 6) == "SERVER") {
@@ -40,10 +39,27 @@ function update() {
 }
 
 function handleServeralerts(msg) {
-  var status = document.getElementById("status");
-  status.classList.add("success");
-  status.innerHTML = msg;
+  if (msg.includes("has joined the chat")) {
+    var status = document.getElementById("status");
+    status.classList = ""
+    status.classList.add("success");
+    status.innerHTML = msg;
+    
+  }
+  if (msg.includes("has left the chat")) {
+    var status = document.getElementById("status");
+    status.classList = ""
+    status.classList.add("error");
+    status.innerHTML = msg;
+    
+  }
+  
 }
+function removeStatus() {
+  var status = document.getElementById("status");
+  status.className = ""
+}
+
 
 function scrollToBottom() {
   

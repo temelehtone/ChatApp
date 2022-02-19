@@ -2,6 +2,7 @@ from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread, Lock
 import time
 
+
 #GLOBAL CONSTANTS
 HOST = '86.50.97.197'
 PORT = 5500
@@ -25,6 +26,8 @@ class Client:
 
     def set_name(self, name):
         self.name = name
+
+
     
 
     def receive_message(self):
@@ -36,11 +39,10 @@ class Client:
                 # make sure memory is safe to access
                 self.lock.acquire()
                 self.messages.append(msg)
-                print(self.messages)
                 self.lock.release()
 
             except Exception as e:
-                print("[EXCEPTION]", e)
+                print("[EXCEPTION] in receiving messages", e)
                 break
 
 
@@ -51,7 +53,7 @@ class Client:
             if msg == "{quit}":
                 self.client_socket.close()
         except Exception as e:
-            print(e)
+            print("[EXCEPTION] in sending messages", e)
 
     def get_messages(self):
         # Returns a list of messages

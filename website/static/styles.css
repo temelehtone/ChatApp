@@ -65,7 +65,7 @@
 }
 #text-field ul li {
   min-height: 70px;
-  min-width: 300px;
+  min-width: 200px;
   max-width: 100%;
   background: rgb(189, 189, 189);
   border: 2px solid black;
@@ -111,7 +111,7 @@
   animation: status 4s ease forwards;
 }
 #status.error {
-  background-color: rgb(250, 129, 92);
+  background-color: rgb(226, 53, 0);
   color: white;
   animation: status 4s ease forwards;
 }

@@ -4,25 +4,33 @@ from threading import Thread
 from datetime import datetime
 import time
 
+
 NAME_KEY = 'name'
+CL = 'client'
 
 app = Flask(__name__)
 app.secret_key = "helloimteuvo"
 
-client = None
+clients = []
 messages = []
 
 def disconnect():
-    global client
-    if client:
-        client.disconnect()
-        flash("You have been logged out!", "info")
+    global clients
+    for client in clients:
+        if (session[NAME_KEY] == client.name):
+            
+            client.disconnect()
+            clients.remove(client)
+            
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     
-    
     if request.method == "POST":
+        for client in clients:
+            if request.form["inputName"] == client.name:
+                flash("Name already in use!", "info")
+                return redirect(url_for("login"))
         session[NAME_KEY] = request.form["inputName"]
         
         return redirect(url_for("home"))
@@ -35,6 +43,7 @@ def logout():
     if NAME_KEY in session:
         disconnect()
         session.pop(NAME_KEY, None)
+        flash("You have been logged out!", "info")
         
     return redirect(url_for("login"))
     
@@ -43,22 +52,28 @@ def logout():
 @app.route("/")
 @app.route("/home")
 def home():
-    global client
+    global clients
     if NAME_KEY not in session:
         return redirect(url_for("login"))
     
-    
+    for c in clients:
+        if session[NAME_KEY] == c.name:
+            return render_template("index.html", **{"login":True, "session": session})
     client = Client(session[NAME_KEY])
+    
+    clients.append(client)
     return render_template("index.html", **{"login":True, "session": session})
 
 @app.route("/send_message", methods=["GET"])
 def send():
     
-    global client
+    global clients
 
     msg = request.args.get("val")
-    if client:
-        client.send_message(msg)
+    
+    for client in clients:
+        if (session[NAME_KEY] == client.name):
+            client.send_message(msg)
     return "none"
 
 @app.route("/get_messages")
@@ -68,10 +83,12 @@ def get_messages():
    
 def update_messages():
     global messages
+    global clients
     while True:
         time.sleep(0.1) # Update every 100ms
-        if not client: continue
-        new_messages = client.get_messages() # get any new messages from client 
+        new_messages = []
+        
+        new_messages = clients[0].get_messages() # get any new messages from client 
         for i in range(len(new_messages)):
             if new_messages[i][0:6] != "SERVER":
                 new_messages[i] += f":{datetime.now().strftime('%H:%M:%S')}"
