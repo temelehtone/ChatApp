@@ -19,4 +19,76 @@
   </div>
 </section>
 
+
+<script>
+  // Updates the messages 5 times in second
+window.onload = function () {
+  setInterval(update, 200);
+};
+
+function update() {
+  this.fetch("/get_messages")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (dict) {
+      $("#list").empty();
+      
+      for (msg of dict["messages"]) {
+        var messageList = msg.split(":");
+        if (msg.substring(0, 6) == "SERVER") {
+          if (msg.includes("has joined the chat")) {
+            
+            $("#list").append(
+            `<li class="list-item server-join"><div class='top-row'><h5 class='name'>${messageList[0]}</h5><p class='text'>${messageList[1]}</p></div><div class='time-div'><p class='time'>${messageList[2]}:${messageList[3]}:${messageList[4]}</p></div></li>`
+          );
+          } 
+          if (msg.includes("has left the chat")) {
+            $("#list").append(
+            `<li class="list-item server-left"><div class='top-row'><h5 class='name'>${messageList[0]}</h5><p class='text'>${messageList[1]}</p></div><div class='time-div'><p class='time'>${messageList[2]}:${messageList[3]}:${messageList[4]}</p></div></li>`
+          );
+          }
+          
+        } else {
+          $("#list").append(
+            `<li class="list-item"><div class='top-row'><h5 class='name'>${messageList[0]}</h5><p class='text'>${messageList[1]}</p></div><div class='time-div'><p class='time'>${messageList[2]}:${messageList[3]}:${messageList[4]}</p></div></li>`
+          );
+        }
+      }
+    });
+}
+
+function handleServeralerts(msg) {
+  if (msg.includes("has joined the chat")) {
+    var status = document.getElementById("status");
+    status.classList = ""
+    status.classList.add("success");
+    status.innerHTML = msg;
+    
+  }
+  if (msg.includes("has left the chat")) {
+    var status = document.getElementById("status");
+    status.classList = ""
+    status.classList.add("error");
+    status.innerHTML = msg;
+    
+  }
+  
+}
+
+
+
+function scrollToBottom() {
+  
+
+    var element = document.querySelector("#text-field");
+    if (element) { 
+        // element found
+        element.scrollHeight = element.scrollHeight;
+    } 
+    
+  
+}
+</script>
+
 {% endblock %}

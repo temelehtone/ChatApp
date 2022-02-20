@@ -85,14 +85,12 @@ def update_messages():
     global messages
     global clients
     while True:
-        time.sleep(0.1) # Update every 100ms
+        time.sleep(0.2) # Update every 200ms
         new_messages = []
-        
-        new_messages = clients[0].get_messages() # get any new messages from client 
-        for i in range(len(new_messages)):
-            if new_messages[i][0:6] != "SERVER":
-                new_messages[i] += f":{datetime.now().strftime('%H:%M:%S')}"
-        messages.extend(new_messages) # add to local list of messages
+        for client in clients:
+            new_messages = client.get_messages()
+        messages.extend(new_messages) # get any new messages from client 
+
         
         for msg in new_messages: 
             if msg == "{quit}":

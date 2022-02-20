@@ -24,6 +24,7 @@ def broadcast(msg, name):
 
     for person in persons:
         client = person.client
+        
         client.send(bytes(name + ": ", FORMAT) + msg)
 
 def client_communication(person):
@@ -35,23 +36,27 @@ def client_communication(person):
     # First message received is always the persons name
     name = client.recv(BUFSIZE).decode(FORMAT)
     person.set_name(name)
-    msg = bytes(f"{name} has joined the chat!", FORMAT)
+    msg = bytes(f"{name} has joined the chat!:{time.strftime('%H:%M:%S')}", FORMAT)
     broadcast(msg, "SERVER") # Broadcasts welcome message
     
     while True: # Wait for any messages from person
         try:
             msg = client.recv(BUFSIZE)
 
+
             if msg == bytes("{quit}", FORMAT): # If message is quit disconnect client
                 client.close()
                 persons.remove(person)
-                broadcast(bytes(f"{name} has left the chat...", FORMAT), "SERVER")
+                broadcast(bytes(f"{name} has left the chat...:{time.strftime('%H:%M:%S')}", FORMAT), "SERVER")
                 print(f"[DISCONNECTED] {name} disconnected")
                 break
             elif msg == bytes("q", FORMAT):
                 SERVER.close()
             else:
-                broadcast(msg, name)
+                msg = msg.decode(FORMAT)
+                msg += f":{time.strftime('%H:%M:%S')}"
+                
+                broadcast(bytes(msg, FORMAT), name)
 
         except Exception as e:
             print("[EXCEPTION] in communication", e)
