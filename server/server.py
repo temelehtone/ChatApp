@@ -7,7 +7,7 @@ from person import Person
 
 
 #GLOBAL CONSTANTS
-HOST = "86.50.97.197"
+HOST = "localhost"
 PORT = 5500
 BUFSIZE = 512
 ADDR = (HOST, PORT)

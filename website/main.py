@@ -1,7 +1,6 @@
 from flask import Flask, render_template, session, url_for, request, redirect, jsonify, flash
 from client import Client
 from threading import Thread
-from datetime import datetime
 import time
 from flask_sqlalchemy import SQLAlchemy
 
@@ -17,13 +16,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 db = SQLAlchemy(app)
+
 class Messages(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     message = db.Column(db.String(150))
 
     def __init__(self, msg):
-        self.message = msg
-        
+        self.message = msg    
 
 all_messages = Messages.query.all()
 messages = [msg.message for msg in all_messages]
@@ -120,6 +119,7 @@ def update_messages():
 
 
 if __name__ == "__main__":
+    
     Thread(target=update_messages).start()
-    app.run(debug=True, host="86.50.97.197")
+    app.run(debug=True, host="localhost")
      

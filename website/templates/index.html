@@ -1,9 +1,10 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
 
-
 <section class="chat-room">
-  <div id="status"></div>
+  <button onclick="scrollToBottom()" class="down-button">
+    <i class="fa-solid fa-arrow-down fa-2x"></i>
+  </button>
   <div id="text-field">
     <ul id="list"></ul>
   </div>
@@ -15,88 +16,17 @@
       name="message"
       maxlength="100"
     />
-    <button type="submit" id="sendBtn">Send</button>
+    <button type="submit" id="sendBtn" class="send-button">Send</button>
   </div>
 </section>
-
-
-<script>
-  // Updates the messages 5 times in second
-window.onload = function () {
-  setInterval(update, 200);
-};
-
-function update() {
-  this.fetch("/get_messages")
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      $("#list").empty();
-      
-      for (msg of data["messages"]) {
-        var messageList = msg.split(":");
-        if (msg.substring(0, 6) == "SERVER") {
-          if (msg.includes("has joined the chat")) {
-            
-            $("#list").append(
-            `<li class="list-item server-join"><div class='top-row'><h5 class='name'>${messageList[0]}</h5><p class='text'>${messageList[1]}</p></div><div class='time-div'><p class='time'>${messageList[2]}:${messageList[3]}:${messageList[4]}</p></div></li>`
-          );
-          } 
-          if (msg.includes("has left the chat")) {
-            $("#list").append(
-            `<li class="list-item server-left"><div class='top-row'><h5 class='name'>${messageList[0]}</h5><p class='text'>${messageList[1]}</p></div><div class='time-div'><p class='time'>${messageList[2]}:${messageList[3]}:${messageList[4]}</p></div></li>`
-          );
-          }
-          
-        } else {
-          if (messageList[0] == data["name"]) {
-            $("#list").append(
-            `<li class="list-item"><div class='top-row'><h5 class='name'>${messageList[0]}</h5><p class='text'>${messageList[1]}</p></div><div class='time-div'><p class='time'>${messageList[2]}:${messageList[3]}:${messageList[4]}</p></div></li>`
-          );
-          } else {
-            $("#list").append(
-              `<li class="list-item another-client"><div class='top-row'><h5 class='name'>${messageList[0]}</h5><p class='text'>${messageList[1]}</p></div><div class='time-div'><p class='time'>${messageList[2]}:${messageList[3]}:${messageList[4]}</p></div></li>`
-            );
-
-          }
-          
-        }
-      }
-    });
-}
-
-function handleServeralerts(msg) {
-  if (msg.includes("has joined the chat")) {
-    var status = document.getElementById("status");
-    status.classList = ""
-    status.classList.add("success");
-    status.innerHTML = msg;
-    
-  }
-  if (msg.includes("has left the chat")) {
-    var status = document.getElementById("status");
-    status.classList = ""
-    status.classList.add("error");
-    status.innerHTML = msg;
-    
-  }
-  
-}
-
-
-
-function scrollToBottom() {
-  
-
-    var element = document.querySelector("#text-field");
-    if (element) { 
-        // element found
-        element.scrollHeight = element.scrollHeight;
-    } 
-    
-  
-}
-</script>
+<script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+<script
+      type="text/javascript"
+      src="{{ url_for('static', filename='index.js') }}"
+    ></script>
 
 {% endblock %}

@@ -4,7 +4,7 @@ import time
 
 
 #GLOBAL CONSTANTS
-HOST = '86.50.97.197'
+HOST = 'localhost'
 PORT = 5500
 ADDR = (HOST, PORT)
 BUFSIZE = 512
