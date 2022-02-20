@@ -47,11 +47,8 @@ def client_communication(person):
             if msg == bytes("{quit}", FORMAT): # If message is quit disconnect client
                 client.close()
                 persons.remove(person)
-                broadcast(bytes(f"{name} has left the chat...:{time.strftime('%H:%M:%S')}", FORMAT), "SERVER")
                 print(f"[DISCONNECTED] {name} disconnected")
                 break
-            elif msg == bytes("q", FORMAT):
-                SERVER.close()
             else:
                 msg = msg.decode(FORMAT)
                 msg += f":{time.strftime('%H:%M:%S')}"

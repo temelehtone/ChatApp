@@ -3,16 +3,32 @@ from client import Client
 from threading import Thread
 from datetime import datetime
 import time
+from flask_sqlalchemy import SQLAlchemy
+
+
 
 
 NAME_KEY = 'name'
-CL = 'client'
 
 app = Flask(__name__)
 app.secret_key = "helloimteuvo"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+db = SQLAlchemy(app)
+class Messages(db.Model):
+    _id = db.Column("id", db.Integer, primary_key=True)
+    message = db.Column(db.String(150))
+
+    def __init__(self, msg):
+        self.message = msg
+        
+
+all_messages = Messages.query.all()
+messages = [msg.message for msg in all_messages]
 
 clients = []
-messages = []
 
 def disconnect():
     global clients
@@ -21,6 +37,11 @@ def disconnect():
             
             client.disconnect()
             clients.remove(client)
+            
+            message = f"SERVER:{session[NAME_KEY]} has left the chat...:{time.strftime('%H:%M:%S')}"
+            messages.append(message)
+            db.session.add(Messages(message))
+            db.session.commit()
             
 
 @app.route("/login", methods=["POST", "GET"])
@@ -72,7 +93,7 @@ def send():
     msg = request.args.get("val")
     
     for client in clients:
-        if (session[NAME_KEY] == client.name):
+        if session[NAME_KEY] == client.name:
             client.send_message(msg)
     return "none"
 
@@ -82,19 +103,20 @@ def get_messages():
 
    
 def update_messages():
-    global messages
     global clients
+    global messages
     while True:
         time.sleep(0.2) # Update every 200ms
         new_messages = []
-        for client in clients:
+        for client in clients: # get any new messages from client
             new_messages = client.get_messages()
-        messages.extend(new_messages) # get any new messages from client 
-
-        
-        for msg in new_messages: 
+            
+        messages.extend(new_messages)       
+        for msg in new_messages:
             if msg == "{quit}":
                 break
+            db.session.add(Messages(msg))
+            db.session.commit()
 
 
 if __name__ == "__main__":
