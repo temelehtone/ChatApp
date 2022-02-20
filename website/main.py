@@ -40,8 +40,7 @@ def disconnect():
             
             message = f"SERVER:{session[NAME_KEY]} has left the chat...:{time.strftime('%H:%M:%S')}"
             messages.append(message)
-            db.session.add(Messages(message))
-            db.session.commit()
+            
             
 
 @app.route("/login", methods=["POST", "GET"])
@@ -99,7 +98,7 @@ def send():
 
 @app.route("/get_messages")
 def get_messages():
-    return jsonify({"messages": messages})
+    return jsonify({"messages": messages, "name":session[NAME_KEY]})
 
    
 def update_messages():
@@ -115,8 +114,9 @@ def update_messages():
         for msg in new_messages:
             if msg == "{quit}":
                 break
-            db.session.add(Messages(msg))
-            db.session.commit()
+            if msg[0:6] != "SERVER":
+                db.session.add(Messages(msg))
+                db.session.commit()
 
 
 if __name__ == "__main__":

@@ -67,7 +67,7 @@
   min-height: 70px;
   min-width: 200px;
   max-width: 100%;
-  background: rgb(189, 189, 189);
+  background: rgb(136, 136, 136);
   border: 2px solid black;
   border-radius: 5px;
   box-shadow: 5px rgba(0, 0, 0, 0.7);
@@ -96,12 +96,47 @@
   padding: 5px;
   
 }
-
 .server-join{
   background: rgb(143, 255, 92);
 }
 .server-left {
   background: rgb(255, 99, 99);
+}
+.another-client{
+  background: rgb(221, 221, 221);
+}
+
+#status {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+}
+#status.success {
+  background-color: rgb(211, 250, 153);
+  animation: status 4s ease forwards;
+}
+#status.error {
+  background-color: rgb(226, 53, 0);
+  color: white;
+  animation: status 4s ease forwards;
+}
+@keyframes status {
+  0% {
+    opacity: 1;
+    pointer-events: all;
+  }
+  90% {
+    opacity: 1;
+    pointer-events: all;
+  }
+  100% {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 #flash {
