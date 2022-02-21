@@ -28,6 +28,7 @@ function update() {
     .then(function (data) {
       $("#list").empty();
 
+      // Updates the messages to the screen based on who sent them
       for (msg of data["messages"]) {
         var messageList = msg.split(":");
         if (msg.substring(0, 6) == "SERVER") {
@@ -56,26 +57,14 @@ function update() {
     });
 }
 
-function handleServeralerts(msg) {
-  if (msg.includes("has joined the chat")) {
-    var status = document.getElementById("status");
-    status.classList = "";
-    status.classList.add("success");
-    status.innerHTML = msg;
-  }
-  if (msg.includes("has left the chat")) {
-    var status = document.getElementById("status");
-    status.classList = "";
-    status.classList.add("error");
-    status.innerHTML = msg;
-  }
-}
 
+// Scrolls to bottom of the chat when button pressed
 function scrollToBottom() {
   var textField = document.querySelector("#text-field");
   textField.scrollTop = textField.scrollHeight - textField.clientHeight;
 }
 
+// Sends message if eneter is pressed
 addEventListener('keydown', (e) => {
   if(e.key == "Enter" && document.getElementById("msg").value != "") {
     var value = document.getElementById("msg").value;
